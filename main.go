@@ -15,7 +15,7 @@ import (
 	"proyecto_algoritmos/rtree"
 )
 
-const connString = "server=localhost;database=ProyectoRTree;user id=sa;password=123456789;encrypt=disable"
+const connString = "server=localhost;database=ProyectoRTree;user id=sa;password=123456789;encrypt=disable;connection timeout=5"
 
 func mainTerminal() {
 	db, err := sql.Open("sqlserver", connString)
@@ -90,7 +90,7 @@ func mainTerminal() {
 }
 
 func cargarLugares(db *sql.DB) ([]modelos.Lugar, error) {
-	rows, err := db.Query("SELECT * FROM lugares")
+	rows, err := db.Query("SELECT ID, Nombre, Categoria, Ciudad, Latitud, Longitud FROM lugares")
 	if err != nil {
 		return nil, err
 	}

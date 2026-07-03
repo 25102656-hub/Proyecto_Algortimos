@@ -28,13 +28,26 @@ El sistema permite registrar lugares con:
 - Eliminación por ID
 - Visualización del árbol
 - Carga de datos desde SQL Server
-- Interfaz gráfica con Fyne
+- Simulación visual con Vue.js y backend en Go
 
-## Ejecución
-en bash
+## Ejecucion del frontend Vue
+
+cd frontend-vue
+npm.cmd install
+npm.cmd run dev
+
+http://localhost:5173
+
+## Ejecución en bash
+```bash
+go run .
 go mod tidy
 go run .
 go build .
+
+## Backend 
+
+http://localhost:8080
 
 ## unitarios
 go test ./...
