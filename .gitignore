@@ -1,0 +1,8 @@
+*.exe
+*.test
+*.out
+*.log
+
+.vscode/
+bin/
+dist/

@@ -68,7 +68,7 @@ func main() {
 
 	btnInsertar := widget.NewButton("Insertar lugar", func() {
 		nombre := strings.TrimSpace(nombreEntry.Text)
-		categoria := strings.TrimSpace(categoriaEntry.Text)
+		provincia := strings.TrimSpace(categoriaEntry.Text)
 		ciudad := strings.TrimSpace(ciudadEntry.Text)
 		latitud, ok := leerFloatGUI(latitudEntry.Text, "latitud", -90, 90, resultado)
 		if !ok {
@@ -79,30 +79,30 @@ func main() {
 			return
 		}
 
-		if nombre == "" || categoria == "" || ciudad == "" {
+		if nombre == "" || provincia == "" || ciudad == "" {
 			resultado.SetText("Nombre, categoría y ciudad no pueden estar vacíos.")
 			return
 		}
 
 		var idGenerado int
 		err := db.QueryRow(
-			"INSERT INTO lugares (Nombre, Provincia, Ciudad, Latitud, Longitud) OUTPUT INSERTED.ID VALUES (@p1, @p2, @p3, @p4, @p5)",
+			"INSERT INTO lugares (Nombre, Categoria, Ciudad, Latitud, Longitud) OUTPUT INSERTED.ID VALUES (@p1, @p2, @p3, @p4, @p5)",
 			nombre,
-			categoria,
+			provincia,
 			ciudad,
 			latitud,
 			longitud,
 		).Scan(&idGenerado)
 
 		if err != nil {
-			resultado.SetText("Error al insertar la base de datos: " + err.Error() + "\nRevisa si tu columna se llama Categoria o [Categoría].")
+			resultado.SetText("Error al insertar en la base de datos: " + err.Error() + "\nLa tabla debe tener la columna Categoria.")
 			return
 		}
 
 		lugar := modelos.Lugar{
 			Id:        idGenerado,
 			Nombre:    nombre,
-			Categoria: categoria,
+			Categoria: provincia,
 			Ciudad:    ciudad,
 			Latitud:   latitud,
 			Longitud:  longitud,
@@ -309,7 +309,7 @@ func formatearLugares(titulo string, lugares []modelos.Lugar) string {
 
 	for _, lugar := range lugares {
 		sb.WriteString(fmt.Sprintf(
-			"ID: %d | Lugar: %s | Provincia/Depto: %s | Ciudad: %s | Lat: %.6f | Long: %.6f\n",
+			"ID: %d | Lugar: %s | Provincia/Dep: %s | Ciudad: %s | Lat: %.6f | Long: %.6f\n",
 			lugar.Id,
 			lugar.Nombre,
 			lugar.Categoria,
